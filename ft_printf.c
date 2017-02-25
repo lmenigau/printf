@@ -6,13 +6,13 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/02/24 13:02:52 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/02/24 15:10:11 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*ft_itoa(int n)
+char	*ft_itoabaseunsigned(char *base, char *buff, long n)
 {
 	int		pow;
 	int		len;
@@ -38,6 +38,59 @@ char	*ft_itoa(int n)
 		len--;
 	}
 	return (str);
+}
+char	*ft_itoabasesigned(char *base, char *buff, long n)
+{
+	int		pow;
+	int		len;
+	char	*str;
+
+	len = 1;
+	pow = n;
+	while (pow /= 10)
+		len++;
+	if (n < 0)
+		len++;
+	else
+		n = -n;
+	if ((str = malloc(len + 1)) == NULL)
+		return (NULL);
+	str[len--] = '\0';
+	while (len >= 0)
+	{
+		str[len] = -(n % 10) + '0';
+		n /= 10;
+		if (n == 0 && len == 1)
+			str[--len] = '-';
+		len--;
+	}
+	return (str);
+}
+
+int		parse_number(const char *str)
+{
+	int		i;
+	int		neg;
+	int		nb;
+
+	neg = 1;
+	nb = 0;
+	i = 0;
+	while (ft_isspace(str[i]))
+		i++;
+	if (str[i] == '-')
+		neg = -1;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	while (ft_isdigit(str[i]))
+	{
+		if (neg == -1)
+			nb = nb * 10 - (str[i] - '0');
+		else
+			nb = nb * 10 + (str[i] - '0');
+		i++;
+	}
+	return (nb);
 }
 
 const t_spec	g_spec[] = {{BLOW, s, none, 0, 0, 0, {}, 0},
@@ -90,6 +143,8 @@ size_t	parse_spec(const char *format, va_list ap, char *buffer, size_t count)
 		else
 			break;
 	}
+	get_arg();
+	print_arg();
 	return (i);
 }
 
