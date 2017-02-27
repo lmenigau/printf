@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:49:51 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/02/24 08:53:17 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/02/27 09:59:32 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,12 @@ typedef struct	s_spec
 	int		base;
 
 }				t_spec;
+
+typedef struct	s_buff
+{
+	char	buff[BUFF_SIZE];
+	size_t	count;
+}				t_buff;
 
 long	get_int(va_list ap);
 long	get_long(va_list ap);

@@ -6,11 +6,33 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/02/24 15:10:11 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/02/27 10:01:13 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+void	ft_putnbr_base_signed(long n, t_buff *buffer)
+{
+	int		pow;
+	int		neg;
+
+	pow = 1;
+	neg = 1;
+	while (n / pow >= 10 || n / pow <= -10)
+		pow *= 10;
+	if (n < 0)
+	{
+		ft_putchar('-');
+		neg = -1;
+	}
+	while (pow)
+	{
+		ft_putchar((neg * (n / pow)) + '0');
+		n %= pow;
+		pow /= 10;
+	}
+}
 
 char	*ft_itoabaseunsigned(char *base, char *buff, long n)
 {
@@ -121,7 +143,7 @@ size_t	ft_strchri(const char *str, int c)
 	return (i);
 }
 
-size_t	parse_spec(const char *format, va_list ap, char *buffer, size_t count)
+size_t	parse_spec(const char *format, va_list ap, t_buff *buff)
 {
 	t_spec	spec;
 	size_t i;
@@ -152,25 +174,24 @@ int	 ft_printf(const char *restrict format, ...)
 {
 	va_list	ap;
 	size_t	i;
-	char	buffer[BUFF_SIZE];
-	size_t	count;
 	char	*found;
+	t_buff	buffer;
 
 	i = 0;
-	count = 0;
+	buffer.count = 0;
 	va_start(ap, format);
 	while (format[i])
 	{
 		if (format[i] == '%')
 		{
 			while (format[++i] && format[i] != '%' &&
-					ft_strchr("sSpdDioOuUxXcC", format[i]) >=14)
-				parse_spec(&format[i + 1], ap, buffer, count);
+					ft_strchri("sSpdDioOuUxXcC", format[i]) >= 14)
+				parse_spec(&format[i + 1], ap, &buffer);
 		}
-		buffer[count++] = format[i];
+		buffer.buff[buffer.count++] = format[i];
 		i++;
 	}
 	va_end(ap);
-	write(1, &buffer, count);
-	return (count);
+	write(1, &buffer.buff, buffer.count % BUFF_SIZE);
+	return (buffer.count);
 }
