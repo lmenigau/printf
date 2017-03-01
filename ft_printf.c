@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/02/27 10:01:13 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/02/27 23:57:22 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,31 +89,6 @@ char	*ft_itoabasesigned(char *base, char *buff, long n)
 	return (str);
 }
 
-int		parse_number(const char *str)
-{
-	int		i;
-	int		neg;
-	int		nb;
-
-	neg = 1;
-	nb = 0;
-	i = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '-')
-		neg = -1;
-	if (str[i] == '+' || str[i] == '-')
-		i++;
-	while (ft_isdigit(str[i]))
-	{
-		if (neg == -1)
-			nb = nb * 10 - (str[i] - '0');
-		else
-			nb = nb * 10 + (str[i] - '0');
-		i++;
-	}
-	return (nb);
-}
 
 const t_spec	g_spec[] = {{BLOW, s, none, 0, 0, 0, {}, 0},
 							{BLOW, S, none, 0, 0, 0, {}, 0},
@@ -143,6 +118,33 @@ size_t	ft_strchri(const char *str, int c)
 	return (i);
 }
 
+int		parse_number(const char *str, size_t *index)
+{
+	int		i;
+	int		neg;
+	int		nb;
+
+	neg = 1;
+	nb = 0;
+	i = 0;
+	while (ft_isspace(str[i]))
+		i++;
+	if (str[i] == '-')
+		neg = -1;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	while (ft_isdigit(str[i]))
+	{
+		if (neg == -1)
+			nb = nb * 10 - (str[i] - '0');
+		else
+			nb = nb * 10 + (str[i] - '0');
+		i++;
+	}
+	*index += i;
+	return (nb);
+}
+
 size_t	parse_spec(const char *format, va_list ap, t_buff *buff)
 {
 	t_spec	spec;
@@ -159,7 +161,7 @@ size_t	parse_spec(const char *format, va_list ap, t_buff *buff)
 		else if (format[i] >= '1' && format[i] <= '9')
 			spec.width = ft_atoi(&format[i]);
 		else if (format[i] == '.')
-			spec.prec = ft_atoi(&format[i + 1]);
+			spec.prec = parse_number(&format[i + 1], &i);
 		else if ((found = ft_strchri("hljz", format[i])) < 4)
 			spec.mod = parse_mod();
 		else
@@ -174,6 +176,7 @@ int	 ft_printf(const char *restrict format, ...)
 {
 	va_list	ap;
 	size_t	i;
+	size_t	j;
 	char	*found;
 	t_buff	buffer;
 
@@ -184,8 +187,9 @@ int	 ft_printf(const char *restrict format, ...)
 	{
 		if (format[i] == '%')
 		{
-			while (format[++i] && format[i] != '%' &&
-					ft_strchri("sSpdDioOuUxXcC", format[i]) >= 14)
+			j = i;
+			while (format[++j] && format[j] != '%' &&
+					ft_strchri("sSpdDioOuUxXcC", format[j]) >= 14)
 				parse_spec(&format[i + 1], ap, &buffer);
 		}
 		buffer.buff[buffer.count++] = format[i];
