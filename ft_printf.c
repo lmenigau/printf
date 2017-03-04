@@ -6,21 +6,21 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/02/27 23:57:22 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/03 18:54:27 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_putnbr_base_signed(long n, t_buff *buffer)
+void	ft_putnbr_base_signed(long n, t_buff *buffer, char *basestr, int base)
 {
 	int		pow;
 	int		neg;
 
 	pow = 1;
 	neg = 1;
-	while (n / pow >= 10 || n / pow <= -10)
-		pow *= 10;
+	while (n / pow >= base || n / pow <= -base)
+		pow *= base;
 	if (n < 0)
 	{
 		ft_putchar('-');
@@ -30,65 +30,15 @@ void	ft_putnbr_base_signed(long n, t_buff *buffer)
 	{
 		ft_putchar((neg * (n / pow)) + '0');
 		n %= pow;
-		pow /= 10;
+		pow /= base;
 	}
 }
 
-char	*ft_itoabaseunsigned(char *base, char *buff, long n)
+void	write_to_buff(t_buff *buffer, char c)
 {
-	int		pow;
-	int		len;
-	char	*str;
-
-	len = 1;
-	pow = n;
-	while (pow /= 10)
-		len++;
-	if (n < 0)
-		len++;
-	else
-		n = -n;
-	if ((str = malloc(len + 1)) == NULL)
-		return (NULL);
-	str[len--] = '\0';
-	while (len >= 0)
-	{
-		str[len] = -(n % 10) + '0';
-		n /= 10;
-		if (n == 0 && len == 1)
-			str[--len] = '-';
-		len--;
-	}
-	return (str);
+	buffer->buff[buffer->count] = c;
+	buffer->count++;
 }
-char	*ft_itoabasesigned(char *base, char *buff, long n)
-{
-	int		pow;
-	int		len;
-	char	*str;
-
-	len = 1;
-	pow = n;
-	while (pow /= 10)
-		len++;
-	if (n < 0)
-		len++;
-	else
-		n = -n;
-	if ((str = malloc(len + 1)) == NULL)
-		return (NULL);
-	str[len--] = '\0';
-	while (len >= 0)
-	{
-		str[len] = -(n % 10) + '0';
-		n /= 10;
-		if (n == 0 && len == 1)
-			str[--len] = '-';
-		len--;
-	}
-	return (str);
-}
-
 
 const t_spec	g_spec[] = {{BLOW, s, none, 0, 0, 0, {}, 0},
 							{BLOW, S, none, 0, 0, 0, {}, 0},
@@ -145,6 +95,20 @@ int		parse_number(const char *str, size_t *index)
 	return (nb);
 }
 
+void	get_arg(va_list ap, t_buff *buff, t_spec *spec)
+{
+}
+
+void parse_mod(t_spec *spec, char mod)
+{
+	if (spec->mod == none)
+		spec->mod = mod;
+	else if (spec->mod == h && mod == h)
+		spec->mod = hh;
+	else if (spec->mod == l && mod == l)
+		spec->mod = ll;
+}
+
 size_t	parse_spec(const char *format, va_list ap, t_buff *buff)
 {
 	t_spec	spec;
@@ -163,7 +127,7 @@ size_t	parse_spec(const char *format, va_list ap, t_buff *buff)
 		else if (format[i] == '.')
 			spec.prec = parse_number(&format[i + 1], &i);
 		else if ((found = ft_strchri("hljz", format[i])) < 4)
-			spec.mod = parse_mod();
+			parse_mod(&spec, format[i]);
 		else
 			break;
 	}
