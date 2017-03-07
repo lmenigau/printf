@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:49:51 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/02/27 09:59:32 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/07 00:14:23 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,18 @@ typedef enum	e_flag
 	dot
 }				t_flag;
 
-static const char *flags= "#0-+ ";
+typedef union	u_arg
+{
+	int			none;
+	char		hh;
+	short		h;
+	long		l;
+	long long	ll;
+	intmax_t	j;
+	size_t		z;
+}				t_arg;
+
+//static const char *flags= "#0-+ ";
 typedef struct	s_spec
 {
 	char	*basestr;

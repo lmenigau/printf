@@ -6,11 +6,18 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/03 18:54:27 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/07 01:21:22 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+
+void	write_to_buff(t_buff *buffer, char c)
+{
+	buffer->buff[buffer->count] = c;
+	buffer->count++;
+}
 
 void	ft_putnbr_base_signed(long n, t_buff *buffer, char *basestr, int base)
 {
@@ -28,16 +35,10 @@ void	ft_putnbr_base_signed(long n, t_buff *buffer, char *basestr, int base)
 	}
 	while (pow)
 	{
-		ft_putchar((neg * (n / pow)) + '0');
+		write_to_buff(buffer, basestr[(neg * (n / pow))]);
 		n %= pow;
 		pow /= base;
 	}
-}
-
-void	write_to_buff(t_buff *buffer, char c)
-{
-	buffer->buff[buffer->count] = c;
-	buffer->count++;
 }
 
 const t_spec	g_spec[] = {{BLOW, s, none, 0, 0, 0, {}, 0},
@@ -95,8 +96,25 @@ int		parse_number(const char *str, size_t *index)
 	return (nb);
 }
 
-void	get_arg(va_list ap, t_buff *buff, t_spec *spec)
+long	get_arg(va_list ap, t_buff *buff, t_spec *spec)
 {
+	t_arg arg;
+
+	if (spec->mod == none)
+		arg.none = va_arg(ap, int);
+	else if (spec->mod == hh)
+		arg.hh = va_arg(ap, int);
+	else if (spec->mod == h)
+		arg.h = va_arg(ap, int);
+	else if (spec->mod == l)
+		arg.l = va_arg(ap, long);
+	else if (spec->mod == ll)
+		arg.ll = va_arg(ap, long long);
+	else if (spec->mod == j)
+		arg.j = va_arg(ap, intmax_t);
+	else if (spec->mod == j)
+		arg.z = va_arg(ap, size_t);
+	return (arg.l);
 }
 
 void parse_mod(t_spec *spec, char mod)
@@ -109,11 +127,16 @@ void parse_mod(t_spec *spec, char mod)
 		spec->mod = ll;
 }
 
+print_arg(long arg, )
+{
+}
+
 size_t	parse_spec(const char *format, va_list ap, t_buff *buff)
 {
 	t_spec	spec;
 	size_t i;
 	size_t found;
+	long	arg;
 
 	i = -1;
 	spec = g_spec[found];
@@ -131,8 +154,9 @@ size_t	parse_spec(const char *format, va_list ap, t_buff *buff)
 		else
 			break;
 	}
-	get_arg();
-	print_arg();
+	arg = get_arg(ap, buff, &spec);
+
+	print_arg(arg);
 	return (i);
 }
 
