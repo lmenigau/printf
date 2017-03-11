@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/07 01:21:22 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/11 18:32:09 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,15 +127,16 @@ void parse_mod(t_spec *spec, char mod)
 		spec->mod = ll;
 }
 
-print_arg(long arg, )
+int print_arg(long arg, t_spec *g_spec)
 {
+
+	return (1);
 }
 
-size_t	parse_spec(const char *format, va_list ap, t_buff *buff)
+size_t	parse_spec(const char *format, va_list ap, t_buff *buff, size_t found)
 {
 	t_spec	spec;
 	size_t i;
-	size_t found;
 	long	arg;
 
 	i = -1;
@@ -165,7 +166,7 @@ int	 ft_printf(const char *restrict format, ...)
 	va_list	ap;
 	size_t	i;
 	size_t	j;
-	char	*found;
+	size_t 	found;
 	t_buff	buffer;
 
 	i = 0;
@@ -177,8 +178,8 @@ int	 ft_printf(const char *restrict format, ...)
 		{
 			j = i;
 			while (format[++j] && format[j] != '%' &&
-					ft_strchri("sSpdDioOuUxXcC", format[j]) >= 14)
-				parse_spec(&format[i + 1], ap, &buffer);
+					(found = ft_strchri("sSpdDioOuUxXcC", format[j])) >= 14)
+				parse_spec(&format[i + 1], ap, &buffer, found);
 		}
 		buffer.buff[buffer.count++] = format[i];
 		i++;
