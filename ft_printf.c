@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/11 18:32:09 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/14 18:55:19 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ long	get_arg(va_list ap, t_buff *buff, t_spec *spec)
 	return (arg.l);
 }
 
-void parse_mod(t_spec *spec, char mod)
+void	 parse_mod(t_spec *spec, char mod)
 {
 	if (spec->mod == none)
 		spec->mod = mod;
@@ -127,9 +127,40 @@ void parse_mod(t_spec *spec, char mod)
 		spec->mod = ll;
 }
 
-int print_arg(long arg, t_spec *g_spec)
+int		print_arg(long arg, t_spec *spec, t_buff *buffer)
 {
+	int		i;
 
+	i = 0;
+	if (spec->flags[minus])
+	{
+		while (i < spec->prec)
+		{
+			write_to_buff(buffer, 0);
+		}
+		ft_putnbr_base_signed(arg, buffer, spec->basestr, spec->base);
+
+		i  = 0;
+		while (i < spec->width)
+		{
+			write_to_buff(buffer, ' ');
+		}
+
+	}
+	else
+	{
+		while (i < spec->width)
+		{
+			write_to_buff(buffer, ' ');
+		}
+		i  = 0;
+		while (i < spec->prec)
+		{
+			write_to_buff(buffer, 0);
+		}
+		ft_putnbr_base_signed(arg, buffer, spec->basestr, spec->base);
+
+	}
 	return (1);
 }
 
@@ -157,7 +188,7 @@ size_t	parse_spec(const char *format, va_list ap, t_buff *buff, size_t found)
 	}
 	arg = get_arg(ap, buff, &spec);
 
-	print_arg(arg);
+	print_arg(arg, &spec, buff);
 	return (i);
 }
 
