@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/17 19:57:52 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/17 23:21:23 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ const t_spec	g_spec[] = {{BLOW, s, none, 0, 0, 0, {0}, 0},
 							{BLOW, S, none, 0, 0, 0, {0}, 0},
 							{BLOW, p, none, 0, 0, 0, {1}, 16},
 							{BLOW, d, none, 0, 0, 0, {0}, 10},
-							{BLOW, D, none, 0, 0, 0, {0}, 10},
+							{BLOW, D, l, 0, 0, 0, {0}, 10},
 							{BLOW, i, none, 0, 0, 0, {0}, 10},
 							{BLOW, o, none, 0, 0, 0, {0}, 8},
-							{BLOW, O, none, 0, 0, 0, {0}, 8},
+							{BLOW, O, l, 0, 0, 0, {0}, 8},
 							{BLOW, u, none, 0, 0, 0, {0}, 10},
-							{BLOW, U, none, 0, 0, 0, {0}, 10},
+							{BLOW, U, l, 0, 0, 0, {0}, 10},
 							{BLOW, x, none, 0, 0, 0, {0}, 16},
 							{BUPP, X, none, 0, 0, 0, {0}, 16},
 							{BLOW, c, none, 0, 0, 0, {0}, 0},
@@ -96,76 +96,71 @@ int		parse_number(const char *str, size_t *index)
 	return (nb);
 }
 
+long	get_arg_num(va_list ap, t_buff *buff, t_spec *spec)
+{
+	long	arg;
+
+	arg = 0;
+	if (spec->mod == none)
+		arg = va_arg(ap, int);
+	else if (spec->mod == hh)
+		arg = va_arg(ap, int);
+	else if (spec->mod == h)
+		arg = va_arg(ap, int);
+	else if (spec->mod == l)
+		arg = va_arg(ap, long);
+	else if (spec->mod == ll)
+		arg = va_arg(ap, long long);
+	else if (spec->mod == j)
+		arg = va_arg(ap, intmax_t);
+	else if (spec->mod == j)
+		arg = va_arg(ap, size_t);
+	return (arg);
+}
+
 long	get_arg(va_list ap, t_buff *buff, t_spec *spec)
 {
-	t_arg arg;
+	long arg;
 
-	if (spec->mod == none)
-		arg.none = va_arg(ap, int);
-	else if (spec->mod == hh)
-		arg.hh = va_arg(ap, int);
-	else if (spec->mod == h)
-		arg.h = va_arg(ap, int);
-	else if (spec->mod == l)
-		arg.l = va_arg(ap, long);
-	else if (spec->mod == ll)
-		arg.ll = va_arg(ap, long long);
-	else if (spec->mod == j)
-		arg.j = va_arg(ap, intmax_t);
-	else if (spec->mod == j)
-		arg.z = va_arg(ap, size_t);
-	return (arg.l);
+	if (spec->conv == c)
+		arg = va_arg(ap, int);
+	else if (spec->conv == C)
+		arg = va_arg(ap, wint_t);
+	else if (spec->conv == s || spec->conv == S)
+		arg = (long)va_arg(ap, void *);
+	else
+		return (get_arg_num(ap, buff, spec));
 }
 
 void	 parse_mod(t_spec *spec, t_modif mod)
 {
-	printf("modc:%d\n", spec->mod);
 	if (spec->mod == none)
 		spec->mod = mod;
 	else if (spec->mod == h && mod == h)
 		spec->mod = hh;
 	else if (spec->mod == l && mod == l)
 		spec->mod = ll;
-	printf("modc:%d\n", spec->mod);
+}
+
+int		print_number(long arg, t_spec *spec, t_buff *buffer)
+{
+}
+int		print_char(long arg, t_spec *spec, t_buff *buffer)
+{
+}
+int		print_string(long arg, t_spec *spec, t_buff *buffer)
+{
 }
 
 int		print_arg(long arg, t_spec *spec, t_buff *buffer)
 {
 	int		i;
-
-	i = 0;
-	if (spec->flags[minus])
-	{
-		while (i < spec->prec)
-		{
-			write_to_buff(buffer, 0);
-			i++;
-		}
-		ft_putnbr_base_signed(arg, buffer, spec->basestr, spec->base);
-		i  = 0;
-		while (i < spec->width)
-		{
-			write_to_buff(buffer, ' ');
-			i++;
-		}
-	}
-	else
-	{
-		while (i < spec->width)
-		{
-			write_to_buff(buffer, ' ');
-			i++;
-		}
-		i  = 0;
-		while (i < spec->prec)
-		{
-			write_to_buff(buffer, 0);
-			i++;
-		}
-		ft_putnbr_base_signed(arg, buffer, spec->basestr, spec->base);
-
-	}
-	return (1);
+	if (spec->conv > S && spec->conv < c)
+		print_number(arg, spec, buffer);
+	else if (spec->conv >= c)
+		print_char(arg, spec, buffer);
+	else if (spec->conv <= S)
+		print_string(arg, spec, buffer);
 }
 
 size_t	parse_spec(const char *format, va_list ap, t_buff *buff, size_t found)
@@ -218,8 +213,12 @@ int	 ft_printf(const char *restrict format, ...)
 			{
 				found = ft_strchri("sSpdDioOuUxXcC", format[j]);
 				if (found <= 13)
+				{
 					parse_spec(&format[i + 1], ap, &buffer, found);
+					i = j + 1;
+				}
 			}
+			i++;
 		}
 		buffer.buff[buffer.count++] = format[i];
 		i++;

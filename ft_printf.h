@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:49:51 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/07 00:14:23 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/17 21:19:41 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FT_PRINTF_H
 
 # include <stdarg.h>
+# include <wchar.h>
 # include "libft.h"
 
 # define BLOW	"0123456789abcdef"
@@ -73,7 +74,6 @@ typedef union	u_arg
 	size_t		z;
 }				t_arg;
 
-//static const char *flags= "#0-+ ";
 typedef struct	s_spec
 {
 	char	*basestr;
