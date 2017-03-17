@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/14 18:55:19 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/17 19:57:52 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	write_to_buff(t_buff *buffer, char c)
 
 void	ft_putnbr_base_signed(long n, t_buff *buffer, char *basestr, int base)
 {
-	int		pow;
+	long	pow;
 	int		neg;
 
 	pow = 1;
@@ -41,20 +41,20 @@ void	ft_putnbr_base_signed(long n, t_buff *buffer, char *basestr, int base)
 	}
 }
 
-const t_spec	g_spec[] = {{BLOW, s, none, 0, 0, 0, {}, 0},
-							{BLOW, S, none, 0, 0, 0, {}, 0},
+const t_spec	g_spec[] = {{BLOW, s, none, 0, 0, 0, {0}, 0},
+							{BLOW, S, none, 0, 0, 0, {0}, 0},
 							{BLOW, p, none, 0, 0, 0, {1}, 16},
-							{BLOW, d, none, 0, 0, 0, {}, 10},
-							{BLOW, D, none, 0, 0, 0, {}, 10},
-							{BLOW, i, none, 0, 0, 0, {}, 10},
-							{BLOW, o, none, 0, 0, 0, {}, 8},
-							{BLOW, O, none, 0, 0, 0, {}, 8},
-							{BLOW, u, none, 0, 0, 0, {}, 10},
-							{BLOW, U, none, 0, 0, 0, {}, 10},
-							{BLOW, x, none, 0, 0, 0, {}, 16},
-							{BUPP, X, none, 0, 0, 0, {}, 16},
-							{BLOW, c, none, 0, 0, 0, {}, 0},
-							{BLOW, C, none, 0, 0, 0, {}, 0}};
+							{BLOW, d, none, 0, 0, 0, {0}, 10},
+							{BLOW, D, none, 0, 0, 0, {0}, 10},
+							{BLOW, i, none, 0, 0, 0, {0}, 10},
+							{BLOW, o, none, 0, 0, 0, {0}, 8},
+							{BLOW, O, none, 0, 0, 0, {0}, 8},
+							{BLOW, u, none, 0, 0, 0, {0}, 10},
+							{BLOW, U, none, 0, 0, 0, {0}, 10},
+							{BLOW, x, none, 0, 0, 0, {0}, 16},
+							{BUPP, X, none, 0, 0, 0, {0}, 16},
+							{BLOW, c, none, 0, 0, 0, {0}, 0},
+							{BLOW, C, none, 0, 0, 0, {0}, 0}};
 
 
 size_t	ft_strchri(const char *str, int c)
@@ -117,14 +117,16 @@ long	get_arg(va_list ap, t_buff *buff, t_spec *spec)
 	return (arg.l);
 }
 
-void	 parse_mod(t_spec *spec, char mod)
+void	 parse_mod(t_spec *spec, t_modif mod)
 {
+	printf("modc:%d\n", spec->mod);
 	if (spec->mod == none)
 		spec->mod = mod;
 	else if (spec->mod == h && mod == h)
 		spec->mod = hh;
 	else if (spec->mod == l && mod == l)
 		spec->mod = ll;
+	printf("modc:%d\n", spec->mod);
 }
 
 int		print_arg(long arg, t_spec *spec, t_buff *buffer)
@@ -137,26 +139,28 @@ int		print_arg(long arg, t_spec *spec, t_buff *buffer)
 		while (i < spec->prec)
 		{
 			write_to_buff(buffer, 0);
+			i++;
 		}
 		ft_putnbr_base_signed(arg, buffer, spec->basestr, spec->base);
-
 		i  = 0;
 		while (i < spec->width)
 		{
 			write_to_buff(buffer, ' ');
+			i++;
 		}
-
 	}
 	else
 	{
 		while (i < spec->width)
 		{
 			write_to_buff(buffer, ' ');
+			i++;
 		}
 		i  = 0;
 		while (i < spec->prec)
 		{
 			write_to_buff(buffer, 0);
+			i++;
 		}
 		ft_putnbr_base_signed(arg, buffer, spec->basestr, spec->base);
 
@@ -171,6 +175,7 @@ size_t	parse_spec(const char *format, va_list ap, t_buff *buff, size_t found)
 	long	arg;
 
 	i = -1;
+	arg = 0;
 	spec = g_spec[found];
 	i = -1;
 	while (format[++i] && format[i] != '%')
@@ -181,13 +186,14 @@ size_t	parse_spec(const char *format, va_list ap, t_buff *buff, size_t found)
 			spec.width = ft_atoi(&format[i]);
 		else if (format[i] == '.')
 			spec.prec = parse_number(&format[i + 1], &i);
-		else if ((found = ft_strchri("hljz", format[i])) < 4)
-			parse_mod(&spec, format[i]);
+		else if ((found = ft_strchri("__hl_jz", format[i])) < 4)
+			parse_mod(&spec, found);
 		else
 			break;
 	}
+	printf("mod:%d\n", spec.mod);
 	arg = get_arg(ap, buff, &spec);
-
+	printf("%ld\n", arg);
 	print_arg(arg, &spec, buff);
 	return (i);
 }
@@ -208,9 +214,12 @@ int	 ft_printf(const char *restrict format, ...)
 		if (format[i] == '%')
 		{
 			j = i;
-			while (format[++j] && format[j] != '%' &&
-					(found = ft_strchri("sSpdDioOuUxXcC", format[j])) >= 14)
-				parse_spec(&format[i + 1], ap, &buffer, found);
+			while (format[++j] && format[j] != '%')
+			{
+				found = ft_strchri("sSpdDioOuUxXcC", format[j]);
+				if (found <= 13)
+					parse_spec(&format[i + 1], ap, &buffer, found);
+			}
 		}
 		buffer.buff[buffer.count++] = format[i];
 		i++;
