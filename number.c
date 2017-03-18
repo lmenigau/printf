@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:29:02 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/18 03:32:06 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/18 03:40:02 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int		parse_number(const char *str, size_t *index)
 	return (nb);
 }
 
-long	get_arg_num(va_list ap, t_buff *buff, t_spec *spec)
+long	get_arg_num(va_list ap, t_spec *spec)
 {
 	long	arg;
 

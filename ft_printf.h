@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:49:51 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/18 03:26:45 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/18 03:40:19 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,11 @@ typedef struct	s_buff
 
 long	get_int(va_list ap);
 long	get_long(va_list ap);
-void	write_to_buff(t_buff *buffer, char c)
+void	write_to_buff(t_buff *buffer, char c);
+long	get_arg_num(va_list ap, t_spec *spec);
+int		parse_number(const char *str, size_t *index);
+void	ft_putnbr_base_signed(long n, t_buff *buffer, char *basestr, int base);
+size_t	ft_strchri(const char *str, int c);
+int		numlen(long n, int base);
+
 #endif

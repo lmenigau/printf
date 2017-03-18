@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:25:00 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/18 03:25:51 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/18 03:36:42 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int		print_number(long arg, t_spec *spec, t_buff *buffer)
 {
-	if (spec->conv == d);
+	if (spec->conv == d)
 		ft_putnbr_base_signed(arg, buffer, spec->basestr, spec->base);
 }
 

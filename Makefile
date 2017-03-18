@@ -6,12 +6,12 @@
 #*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/11/18 02:18:30 by lmenigau          #+#    #+#             *#
-#*   Updated: 2017/03/18 03:34:28 by lmenigau         ###   ########.fr       *#
+#*   Updated: 2017/03/18 03:39:08 by lmenigau         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
 NAME	= libftprintf.a
-SRC		= ft_printf.c get_arg.c utils.c number.c print.c
+SRC		= ft_printf.c utils.c number.c print.c
 OBJ		= $(SRC:.c=.o)
 CFLAGS	= -Wall -Wextra -Ilibft/ -g
 LFLAGS	= -lft -lftprintf

@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/18 03:33:05 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/18 03:40:53 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ long	get_arg(va_list ap, t_buff *buff, t_spec *spec)
 	else if (spec->conv == s || spec->conv == S)
 		arg = (long)va_arg(ap, void *);
 	else
-		return (get_arg_num(ap, buff, spec));
+		return (get_arg_num(ap, spec));
 	return (arg);
 }
 
