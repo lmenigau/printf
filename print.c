@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:25:00 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/18 03:44:17 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/18 04:15:09 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@ int		print_number(long arg, t_spec *spec, t_buff *buffer)
 {
 	if (spec->conv == d || spec->conv == i || spec->conv == D)
 		ft_putnbr_base_signed(arg, buffer, spec->basestr, spec->base);
+	else {
+		ft_putnbr_base_unsigned(arg, buffer, spec->basestr, spec->base);
+	}
 	return (0);
 }
 
@@ -35,6 +38,10 @@ int		print_char(long arg, t_spec *spec, t_buff *buffer)
 
 int		print_string(long arg, t_spec *spec, t_buff *buffer)
 {
+	if (spec->conv == s)
+	{
+		ft_putstr((char *)arg);
+	}
 	return (0);
 }
 
