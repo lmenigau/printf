@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/17 23:21:23 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/18 00:50:46 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,9 @@ long	get_arg_num(va_list ap, t_buff *buff, t_spec *spec)
 	if (spec->mod == none)
 		arg = va_arg(ap, int);
 	else if (spec->mod == hh)
-		arg = va_arg(ap, int);
+		arg = (char)va_arg(ap, int);
 	else if (spec->mod == h)
-		arg = va_arg(ap, int);
+		arg = (short)va_arg(ap, int);
 	else if (spec->mod == l)
 		arg = va_arg(ap, long);
 	else if (spec->mod == ll)
@@ -130,6 +130,7 @@ long	get_arg(va_list ap, t_buff *buff, t_spec *spec)
 		arg = (long)va_arg(ap, void *);
 	else
 		return (get_arg_num(ap, buff, spec));
+	return (arg);
 }
 
 void	 parse_mod(t_spec *spec, t_modif mod)
@@ -144,10 +145,17 @@ void	 parse_mod(t_spec *spec, t_modif mod)
 
 int		print_number(long arg, t_spec *spec, t_buff *buffer)
 {
+	ft_putnbr_base_signed(arg, buffer, spec->basestr, spec->base);
 }
+
 int		print_char(long arg, t_spec *spec, t_buff *buffer)
 {
+	if (spec->conv == c)
+	{
+		ft_putchar(arg);
+	}
 }
+
 int		print_string(long arg, t_spec *spec, t_buff *buffer)
 {
 }
@@ -223,7 +231,5 @@ int	 ft_printf(const char *restrict format, ...)
 		buffer.buff[buffer.count++] = format[i];
 		i++;
 	}
-	va_end(ap);
-	write(1, &buffer.buff, buffer.count % BUFF_SIZE);
 	return (buffer.count);
 }
