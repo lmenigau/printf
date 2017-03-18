@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/18 03:40:53 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/18 05:32:23 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ int		parse_spec(const char *format, va_list ap, t_buff *buff, size_t found)
 		else
 			break;
 	}
-	printf("mod:%d\n", spec.mod);
+	//printf("mod:%d\n", spec.mod);
 	arg = get_arg(ap, buff, &spec);
-	printf("%ld\n", arg);
+	//printf("%ld\n", arg);
 	print_arg(arg, &spec, buff);
 	return (0);
 }
@@ -105,13 +105,15 @@ int	 ft_printf(const char *restrict format, ...)
 				if (found <= 13)
 				{
 					parse_spec(&format[i + 1], ap, &buffer, found);
-					i = j + 1;
+					i = j;
 				}
 			}
 			i++;
 		}
-		buffer.buff[buffer.count++] = format[i];
+		write_to_buff(&buffer, format[i]);
 		i++;
 	}
+	va_end(ap);
+	write(1, &buffer.buff, buffer.count % BUFF_SIZE);
 	return (buffer.count);
 }
