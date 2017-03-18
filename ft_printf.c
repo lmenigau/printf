@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/18 00:50:46 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/18 03:26:13 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,17 @@ void	write_to_buff(t_buff *buffer, char c)
 {
 	buffer->buff[buffer->count] = c;
 	buffer->count++;
+}
+
+
+int		numlen(long n, int base)
+{
+	int		len;
+
+	len = 0;
+	while (n /= base)
+		len++;
+	return len;
 }
 
 void	ft_putnbr_base_signed(long n, t_buff *buffer, char *basestr, int base)
@@ -30,7 +41,7 @@ void	ft_putnbr_base_signed(long n, t_buff *buffer, char *basestr, int base)
 		pow *= base;
 	if (n < 0)
 	{
-		ft_putchar('-');
+		write_to_buff(buffer, '-');
 		neg = -1;
 	}
 	while (pow)
@@ -143,35 +154,7 @@ void	 parse_mod(t_spec *spec, t_modif mod)
 		spec->mod = ll;
 }
 
-int		print_number(long arg, t_spec *spec, t_buff *buffer)
-{
-	ft_putnbr_base_signed(arg, buffer, spec->basestr, spec->base);
-}
-
-int		print_char(long arg, t_spec *spec, t_buff *buffer)
-{
-	if (spec->conv == c)
-	{
-		ft_putchar(arg);
-	}
-}
-
-int		print_string(long arg, t_spec *spec, t_buff *buffer)
-{
-}
-
-int		print_arg(long arg, t_spec *spec, t_buff *buffer)
-{
-	int		i;
-	if (spec->conv > S && spec->conv < c)
-		print_number(arg, spec, buffer);
-	else if (spec->conv >= c)
-		print_char(arg, spec, buffer);
-	else if (spec->conv <= S)
-		print_string(arg, spec, buffer);
-}
-
-size_t	parse_spec(const char *format, va_list ap, t_buff *buff, size_t found)
+int		parse_spec(const char *format, va_list ap, t_buff *buff, size_t found)
 {
 	t_spec	spec;
 	size_t i;
@@ -198,7 +181,7 @@ size_t	parse_spec(const char *format, va_list ap, t_buff *buff, size_t found)
 	arg = get_arg(ap, buff, &spec);
 	printf("%ld\n", arg);
 	print_arg(arg, &spec, buff);
-	return (i);
+	return (0);
 }
 
 int	 ft_printf(const char *restrict format, ...)
