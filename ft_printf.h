@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:49:51 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/17 21:19:41 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/18 03:26:45 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,5 @@ typedef struct	s_buff
 
 long	get_int(va_list ap);
 long	get_long(va_list ap);
+void	write_to_buff(t_buff *buffer, char c)
 #endif
