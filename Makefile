@@ -6,7 +6,7 @@
 #*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/11/18 02:18:30 by lmenigau          #+#    #+#             *#
-#*   Updated: 2017/03/18 03:39:08 by lmenigau         ###   ########.fr       *#
+#*   Updated: 2017/03/18 03:45:44 by lmenigau         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -34,7 +34,7 @@ test_ftprintf: test.c
 			$(CC) $(CFLAGS) $(LFLAGS) $(LDFLAGS) -o test_ftprintf test.c
 
 $(LIB)	:	$(LIBDIR)
-			$(MAKE) -C $(LIBDIR)
+			$(MAKE) -j4 -C $(LIBDIR)
 
 clean	:
 			$(RM) $(OBJ)

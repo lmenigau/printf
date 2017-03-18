@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:49:51 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/18 03:40:19 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/18 03:43:43 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,6 @@ int		parse_number(const char *str, size_t *index);
 void	ft_putnbr_base_signed(long n, t_buff *buffer, char *basestr, int base);
 size_t	ft_strchri(const char *str, int c);
 int		numlen(long n, int base);
+int		print_arg(long arg, t_spec *spec, t_buff *buffer);
 
 #endif
