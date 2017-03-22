@@ -6,27 +6,48 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:25:00 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/22 20:17:52 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/22 21:08:51 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "ft_printf.h"
 
+void	padding(long arg, t_spec *spec, t_buff *buffer)
+{
+	size_t	i;
+	long	len;
+	char	c;
+
+	i = 1;
+	c = ' ';
+	if ((len = spec->width - numlen(arg, spec->base)) < 0)
+			return ;
+	if (spec->flags[zero])
+		c = '0';
+	while (i < (size_t)len)
+	{
+		buffer->buff[buffer->count] = c;
+		buffer->count++;
+		i++;
+	}
+}
+
 int		print_number(long arg, t_spec *spec, t_buff *buffer)
 {
+	if (!spec->flags[minus])
+		padding(arg, spec, buffer);
 	if (spec->conv == d || spec->conv == i || spec->conv == D)
 		ft_putnbr_base_signed(arg, buffer, spec->basestr, spec->base);
 	else
 		ft_putnbr_base_unsigned(arg, buffer, spec->basestr, spec->base);
+	if (spec->flags[minus])
+		padding(arg, spec, buffer);
 	return (0);
 }
 
-void	padding()
-{
-}
 
-void put_str_buff(t_buff *buff, char *str)
+void	put_str_buff(t_buff *buff, char *str)
 {
 	size_t  i;
 
