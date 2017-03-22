@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:29:02 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/18 04:17:12 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/22 20:11:49 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	ft_putnbr_base_unsigned(unsigned long n, t_buff *buffer, char *basestr, int
 	unsigned long	pow;
 
 	pow = 1;
-	while (n / pow >= base)
+	while (n / pow >= (unsigned long )base)
 		pow *= base;
 	while (pow)
 	{

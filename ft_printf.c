@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/18 05:32:23 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/22 20:26:02 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ const t_spec	g_spec[] = {{BLOW, s, none, 0, 0, 0, {0}, 0},
 							{BLOW, x, none, 0, 0, 0, {0}, 16},
 							{BUPP, X, none, 0, 0, 0, {0}, 16},
 							{BLOW, c, none, 0, 0, 0, {0}, 0},
-							{BLOW, C, none, 0, 0, 0, {0}, 0}};
+							{BLOW, C, none, 0, 0, 0, {0}, 0},
+							{BLOW, nil, none, 0, 0, 0, {0}, 0}};
 
 long	get_arg(va_list ap, t_buff *buff, t_spec *spec)
 {
@@ -53,17 +54,17 @@ void	 parse_mod(t_spec *spec, t_modif mod)
 		spec->mod = ll;
 }
 
-int		parse_spec(const char *format, va_list ap, t_buff *buff, size_t found)
+int		parse_spec(const char *format, va_list ap, t_buff *buff, t_conv conv)
 {
 	t_spec	spec;
 	size_t i;
+	size_t found;
 	long	arg;
 
-	i = -1;
 	arg = 0;
-	spec = g_spec[found];
+	spec = g_spec[conv];
 	i = -1;
-	while (format[++i] && format[i] != '%')
+	while (format[++i])
 	{
 		if ((found = ft_strchri("#0-+ ", format[i])) < 5)
 			spec.flags[found] = 1;
@@ -83,12 +84,25 @@ int		parse_spec(const char *format, va_list ap, t_buff *buff, size_t found)
 	return (0);
 }
 
+int		match_conv(const char *format, t_conv *conv)
+{
+	size_t	i;
+
+	i = 0;
+	while(format[i] && (ft_strchri("#0-+ hljz0123456789", format[i]) < 19))
+	{
+		i++;
+	}
+	*conv = ft_strchri("sSpdDioOuUxXcC", format[i]);
+	return (i);
+}
+
 int	 ft_printf(const char *restrict format, ...)
 {
 	va_list	ap;
 	size_t	i;
-	size_t	j;
-	size_t 	found;
+	size_t	off;
+	t_conv	 conv;
 	t_buff	buffer;
 
 	i = 0;
@@ -96,21 +110,15 @@ int	 ft_printf(const char *restrict format, ...)
 	va_start(ap, format);
 	while (format[i])
 	{
+		conv = nil;
 		if (format[i] == '%')
 		{
-			j = i;
-			while (format[++j] && format[j] != '%')
-			{
-				found = ft_strchri("sSpdDioOuUxXcC", format[j]);
-				if (found <= 13)
-				{
-					parse_spec(&format[i + 1], ap, &buffer, found);
-					i = j;
-				}
-			}
-			i++;
+			 off = match_conv(&format[i + 1], &conv);
+			 parse_spec(&format[i + 1], ap, &buffer, conv);
+			 i += off + 1;
 		}
-		write_to_buff(&buffer, format[i]);
+		if (conv == nil)
+			write_to_buff(&buffer, format[i]);
 		i++;
 	}
 	va_end(ap);

@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:49:51 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/18 04:17:46 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/22 19:29:24 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef enum	e_conv
 	X,
 	c,
 	C,
+	nil
 }				t_conv;
 
 typedef enum	e_flag
