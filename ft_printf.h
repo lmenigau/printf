@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:49:51 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/22 19:29:24 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/23 06:46:48 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define BLOW	"0123456789abcdef"
 # define BUPP	"0123456789ABCDEF"
 
-# define BUFF_SIZE	512
+# define BUFF_SIZE	(4096 * 128)
 
 int	 ft_printf(const char *restrict format, ...);
 

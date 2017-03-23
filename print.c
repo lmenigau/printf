@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:25:00 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/22 21:08:51 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/23 08:48:43 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,17 @@ void	padding(long arg, t_spec *spec, t_buff *buffer)
 {
 	size_t	i;
 	long	len;
+	size_t	arglen;
 	char	c;
 
 	i = 1;
 	c = ' ';
-	if ((len = spec->width - numlen(arg, spec->base)) < 0)
-			return ;
+	if (spec->conv != s)
+		arglen = numlen(arg, spec->base);
+	else
+		arglen = ft_strlen((char *)arg);
+	if ((len = spec->width - arglen) < 0)
+		return ;
 	if (spec->flags[zero])
 		c = '0';
 	while (i < (size_t)len)
@@ -35,14 +40,10 @@ void	padding(long arg, t_spec *spec, t_buff *buffer)
 
 int		print_number(long arg, t_spec *spec, t_buff *buffer)
 {
-	if (!spec->flags[minus])
-		padding(arg, spec, buffer);
 	if (spec->conv == d || spec->conv == i || spec->conv == D)
 		ft_putnbr_base_signed(arg, buffer, spec->basestr, spec->base);
 	else
 		ft_putnbr_base_unsigned(arg, buffer, spec->basestr, spec->base);
-	if (spec->flags[minus])
-		padding(arg, spec, buffer);
 	return (0);
 }
 
@@ -80,11 +81,15 @@ int		print_string(long arg, t_spec *spec, t_buff *buffer)
 
 int		print_arg(long arg, t_spec *spec, t_buff *buffer)
 {
+	if (!spec->flags[minus])
+		padding(arg, spec, buffer);
 	if (spec->conv > S && spec->conv < c)
 		print_number(arg, spec, buffer);
 	else if (spec->conv >= c)
 		print_char(arg, spec, buffer);
 	else if (spec->conv <= S)
 		print_string(arg, spec, buffer);
+	if (spec->flags[minus])
+		padding(arg, spec, buffer);
 	return (0);
 }
