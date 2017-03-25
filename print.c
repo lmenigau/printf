@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:25:00 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/25 14:54:43 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/25 18:57:02 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ void	padding(long arg, t_spec *spec, t_buff *buffer)
 
 	i = 1;
 	c = ' ';
-	if (spec->conv != s && spec->conv != nil)
+	if (spec->conv > S && spec->conv < c)
 		arglen = numlen(arg, spec->base);
-	else if (spec->conv == nil)
-		arglen = 0;
-	else
+	if (arg < 0 && spec->sign == 1)
+		arglen++;
+	else if (spec->conv == s)
 		arglen = ft_strlen((char *)arg) - 1;
-	if ((len = spec->width - arglen) < 0)
+	if ((len = spec->width - arglen) <= 0)
 		return ;
 	if (spec->flags[zero])
 		c = '0';
