@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:49:51 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/23 06:46:48 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/25 17:19:49 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ typedef struct	s_spec
 	int		sign;
 	int		flags[6];
 	int		base;
-
 }				t_spec;
 
 typedef struct	s_buff

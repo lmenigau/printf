@@ -6,7 +6,7 @@
 #*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/11/18 02:18:30 by lmenigau          #+#    #+#             *#
-#*   Updated: 2017/03/20 18:09:30 by lmenigau         ###   ########.fr       *#
+#*   Updated: 2017/03/25 13:59:15 by lmenigau         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -27,7 +27,7 @@ test	:	$(NAME) test_ftprintf
 all		:	$(NAME)
 
 $(NAME)	:	$(OBJ) $(LIB)
-			$(AR) rcs $(NAME) $? $(LIBDIR)/*.o
+			$(AR) rcs $(NAME) $? $(wildcard $(LIBDIR)/*.o)
 
 
 test_ftprintf: test.c
