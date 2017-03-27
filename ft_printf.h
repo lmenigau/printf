@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:49:51 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/25 17:19:49 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/27 11:41:27 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef enum	e_modif
 	l,
 	ll,
 	j,
-	z,
+	z
 }				t_modif;
 
 typedef enum	e_conv

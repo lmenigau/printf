@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:29:02 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/25 18:18:00 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/03/27 11:44:41 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ long	get_arg_num(va_list ap, t_spec *spec)
 		arg = va_arg(ap, long long);
 	else if (spec->mod == j)
 		arg = va_arg(ap, intmax_t);
-	else if (spec->mod == j)
-		arg = va_arg(ap, size_t);
+	else if (spec->mod == z)
+		arg = va_arg(ap, long);
 	if (spec->sign == 0 && spec->mod < l)
 		arg &= ((~0ul) >> argsize[spec->mod]);
 	return (arg);
