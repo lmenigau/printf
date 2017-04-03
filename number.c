@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:29:02 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/27 11:44:41 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/03 20:03:59 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		numlen(long n, int base)
 	len = 0;
 	while (n /= base)
 		len++;
-	return len;
+	return (len);
 }
 
 void	ft_putnbr_base_signed(long n, t_buff *buffer, char *basestr, int base)

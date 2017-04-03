@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:49:51 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/27 11:41:27 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/03 21:57:54 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define BLOW	"0123456789abcdef"
 # define BUPP	"0123456789ABCDEF"
 
-# define BUFF_SIZE	(4096 * 128)
+# define BUFF_SIZE	(512)
 
 int	 ft_printf(const char *restrict format, ...);
 
@@ -87,6 +87,16 @@ typedef struct	s_spec
 	int		base;
 }				t_spec;
 
+typedef struct s_print_info
+{
+	long	arg;
+	int		padlen;
+	int		preclen;
+	int		arglen;
+	char	sign;
+	char	padchar;
+}				t_print_info;
+
 typedef struct	s_buff
 {
 	char	buff[BUFF_SIZE];
@@ -103,5 +113,7 @@ size_t	ft_strchri(const char *str, int c);
 int		numlen(long n, int base);
 int		print_arg(long arg, t_spec *spec, t_buff *buffer);
 void	ft_putnbr_base_unsigned(unsigned long n, t_buff *buffer, char *basestr, int base);
+int		process_format(va_list ap, t_buff *buff, t_spec *spec);
+long	get_arg(va_list ap, t_buff *buff, t_spec *spec);
 
 #endif

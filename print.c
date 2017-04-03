@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:25:00 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/03/25 18:57:02 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/03 20:40:24 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,10 @@ void	padding(long arg, t_spec *spec, t_buff *buffer)
 		c = '0';
 	while (i < (size_t)len)
 	{
-		buffer->buff[buffer->count] = c;
+		buffer->buff[buffer->count % BUFF_SIZE] = c;
 		buffer->count++;
+		if (buffer->count % BUFF_SIZE == 0)
+			write(1, buffer->buff, BUFF_SIZE);
 		i++;
 	}
 }
@@ -57,8 +59,10 @@ void	put_str_buff(t_buff *buff, char *str)
 	i = 0;
 	while (str[i])
 	{
-		buff->buff[buff->count] = str[i];
+		buff->buff[buff->count % BUFF_SIZE] = str[i];
 		buff->count++;
+		if (buff->count % BUFF_SIZE == 0)
+			write(1, buff->buff, BUFF_SIZE);
 		i++;
 	}
 }
