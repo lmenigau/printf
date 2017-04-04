@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:25:00 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/03 23:24:12 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/04 09:34:56 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,16 @@ void	padding(int padlen, char padchar, t_buff *buffer)
 	}
 }
 
-int		print_number(long arg, t_spec *spec, t_buff *buffer)
+int		print_number(t_print_info *print_info, t_spec *spec, t_buff *buffer)
 {
+	if (print_info->sign)
+		write_to_buff(buffer, print_info->sign);
+	if (print_info->preclen > 0)
+		padding(print_info->preclen, '0', buffer);
 	if (spec->conv == d || spec->conv == i || spec->conv == D)
-		ft_putnbr_base_signed(arg, buffer, spec->basestr, spec->base);
+		ft_putnbr_base_signed(print_info->arg, buffer, spec->basestr, spec->base);
 	else
-		ft_putnbr_base_unsigned(arg, buffer, spec->basestr, spec->base);
+		ft_putnbr_base_unsigned(print_info->arg, buffer, spec->basestr, spec->base);
 	return (0);
 }
 
@@ -76,7 +80,7 @@ int		print_arg(t_print_info *print_info, t_spec *spec, t_buff *buffer)
 	if (!spec->flags[minus])
 		padding(print_info->padlen, print_info->padchar, buffer);
 	if (spec->conv > S && spec->conv < c)
-		print_number(print_info->arg, spec, buffer);
+		print_number(print_info, spec, buffer);
 	else if (spec->conv >= c)
 		print_char(print_info->arg, spec, buffer);
 	else if (spec->conv <= S)

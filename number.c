@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:29:02 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/03 20:03:59 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/04 09:37:29 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	ft_putnbr_base_signed(long n, t_buff *buffer, char *basestr, int base)
 		pow *= base;
 	if (n < 0)
 	{
-		write_to_buff(buffer, '-');
 		neg = -1;
 	}
 	while (pow)
