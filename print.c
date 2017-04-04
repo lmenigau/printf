@@ -6,35 +6,21 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:25:00 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/03 20:40:24 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/03 23:24:12 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "ft_printf.h"
 
-void	padding(long arg, t_spec *spec, t_buff *buffer)
+void	padding(int padlen, char padchar, t_buff *buffer)
 {
-	size_t	i;
-	long	len;
-	size_t	arglen;
-	char	c;
+	size_t		i;
 
-	i = 1;
-	c = ' ';
-	if (spec->conv > S && spec->conv < c)
-		arglen = numlen(arg, spec->base);
-	if (arg < 0 && spec->sign == 1)
-		arglen++;
-	else if (spec->conv == s)
-		arglen = ft_strlen((char *)arg) - 1;
-	if ((len = spec->width - arglen) <= 0)
-		return ;
-	if (spec->flags[zero])
-		c = '0';
-	while (i < (size_t)len)
+	i = 0;
+	while (i < (size_t)padlen)
 	{
-		buffer->buff[buffer->count % BUFF_SIZE] = c;
+		buffer->buff[buffer->count % BUFF_SIZE] = padchar;
 		buffer->count++;
 		if (buffer->count % BUFF_SIZE == 0)
 			write(1, buffer->buff, BUFF_SIZE);
@@ -85,17 +71,17 @@ int		print_string(long arg, t_spec *spec, t_buff *buffer)
 	return (0);
 }
 
-int		print_arg(long arg, t_spec *spec, t_buff *buffer)
+int		print_arg(t_print_info *print_info, t_spec *spec, t_buff *buffer)
 {
 	if (!spec->flags[minus])
-		padding(arg, spec, buffer);
+		padding(print_info->padlen, print_info->padchar, buffer);
 	if (spec->conv > S && spec->conv < c)
-		print_number(arg, spec, buffer);
+		print_number(print_info->arg, spec, buffer);
 	else if (spec->conv >= c)
-		print_char(arg, spec, buffer);
+		print_char(print_info->arg, spec, buffer);
 	else if (spec->conv <= S)
-		print_string(arg, spec, buffer);
+		print_string(print_info->arg, spec, buffer);
 	if (spec->flags[minus])
-		padding(arg, spec, buffer);
+		padding(print_info->padlen, print_info->padchar, buffer);
 	return (0);
 }
