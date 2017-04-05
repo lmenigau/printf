@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:29:02 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/04 09:37:29 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/05 20:15:58 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int		numlen(long n, int base)
 {
 	int		len;
 
-	len = 0;
+	len = 1;
 	while (n /= base)
 		len++;
 	return (len);
@@ -80,7 +80,7 @@ int		parse_number(const char *str, size_t *index)
 			nb = nb * 10 + (str[i] - '0');
 		i++;
 	}
-	*index += i;
+	*index += i - 1;
 	return (nb);
 }
 
