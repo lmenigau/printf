@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/03 20:05:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/05 20:56:15 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/05 23:01:10 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	compute_length_num(t_print_info *print_info, t_spec *spec)
 	if (spec->flags[hash] && spec->conv == o)
 		print_info->sign = '0';
 	if (spec->flags[hash] && (spec->conv == x || spec->conv == X))
-		print_info->arglen++;
+		print_info->arglen += 2;
 	if (print_info->sign != '\0')
 		print_info->arglen++;
 	if (print_info->arglen + print_info->preclen < spec->width)
@@ -58,7 +58,7 @@ int		process_format(va_list ap, t_buff *buff, t_spec *spec)
 	t_print_info	print_info;
 
 	print_info.padchar = ' ';
-	if (spec->flags[zero] && !spec->flags[minus])
+	if (spec->flags[zero] && !spec->flags[minus] && !spec->flags[dot])
 		print_info.padchar = '0';
 	print_info.arg = get_arg(ap, buff, spec);
 	handle_sign(&print_info, spec);

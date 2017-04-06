@@ -6,12 +6,27 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:25:00 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/05 21:05:36 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/05 22:58:27 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "ft_printf.h"
+
+void	put_str_buff(t_buff *buff, char *str, int len)
+{
+	size_t  i;
+
+	i = 0;
+	while (i < len)
+	{
+		buff->buff[buff->count % BUFF_SIZE] = str[i];
+		buff->count++;
+		if (buff->count % BUFF_SIZE == 0)
+			write(1, buff->buff, BUFF_SIZE);
+		i++;
+	}
+}
 
 void	padding(int padlen, char padchar, t_buff *buffer)
 {
@@ -30,6 +45,15 @@ void	padding(int padlen, char padchar, t_buff *buffer)
 
 int		print_number(t_print_info *print_info, t_spec *spec, t_buff *buffer)
 {
+	if (!spec->flags[zero])
+	{
+		if (spec->flags[hash] && spec->conv == x && print_info->arg != 0)
+			put_str_buff(buffer, "0x", 2);
+		if (spec->flags[hash] && spec->conv == X && print_info->arg != 0)
+			put_str_buff(buffer, "0X", 2);
+		if (print_info->sign != '\0')
+			write_to_buff(buffer, print_info->sign);
+	}
 	if (print_info->preclen > 0)
 		padding(print_info->preclen, '0', buffer);
 	if (spec->conv == d || spec->conv == i || spec->conv == D)
@@ -37,22 +61,6 @@ int		print_number(t_print_info *print_info, t_spec *spec, t_buff *buffer)
 	else
 		ft_putnbr_base_unsigned(print_info->arg, buffer, spec->basestr, spec->base);
 	return (0);
-}
-
-
-void	put_str_buff(t_buff *buff, char *str, int len)
-{
-	size_t  i;
-
-	i = 0;
-	while (i < len)
-	{
-		buff->buff[buff->count % BUFF_SIZE] = str[i];
-		buff->count++;
-		if (buff->count % BUFF_SIZE == 0)
-			write(1, buff->buff, BUFF_SIZE);
-		i++;
-	}
 }
 
 int		print_char(long arg, t_spec *spec, t_buff *buffer)
@@ -75,8 +83,15 @@ int		print_string(t_print_info *print_info, t_spec *spec, t_buff *buffer)
 
 int		print_arg(t_print_info *print_info, t_spec *spec, t_buff *buffer)
 {
-	if (print_info->sign != '\0')
-		write_to_buff(buffer, print_info->sign);
+	if (spec->flags[zero])
+	{
+		if (spec->flags[hash] && spec->conv == x && print_info->arg != 0)
+			put_str_buff(buffer, "0x", 2);
+		if (spec->flags[hash] && spec->conv == X && print_info->arg != 0)
+			put_str_buff(buffer, "0X", 2);
+		if (print_info->sign != '\0')
+			write_to_buff(buffer, print_info->sign);
+	}
 	if (!spec->flags[minus])
 		padding(print_info->padlen, print_info->padchar, buffer);
 	if (spec->conv > S && spec->conv < c)
