@@ -6,16 +6,15 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/05 20:16:19 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/10 23:03:25 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-
 const t_spec	g_spec[] = {{BLOW, s, none, 0, 0, 0, {0}, 2},
 							{BLOW, S, none, 0, 0, 0, {0}, 2},
-							{BLOW, p, none, 0, 0, 0, {1}, 16},
+							{BLOW, p, l, 0, 0, 0, {1}, 16},
 							{BLOW, d, none, 0, 0, 1, {0}, 10},
 							{BLOW, D, l, 0, 0, 1, {0}, 10},
 							{BLOW, i, none, 0, 0, 1, {0}, 10},
@@ -79,7 +78,7 @@ int		parse_spec(const char *format, va_list ap, t_buff *buff, t_conv conv)
 		else
 			break;
 	}
-	process_format(ap, buff, &spec);
+	process_format(ap, buff, &spec, format[i]);
 	return (0);
 }
 
@@ -116,7 +115,8 @@ int	 ft_printf(const char *restrict format, ...)
 			 parse_spec(&format[i + 1], ap, &buffer, conv);
 			 i += off + 1;
 		}
-		if (conv == nil)
+		else
+		//if (conv == nil)
 			write_to_buff(&buffer, format[i]);
 		i++;
 	}
