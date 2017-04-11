@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/10 23:03:25 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/11 14:52:41 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,14 +109,13 @@ int	 ft_printf(const char *restrict format, ...)
 	while (format[i])
 	{
 		conv = nil;
-		if (format[i] == '%')
+		if (format[i] == '%' && format[i + 1] != '\0')
 		{
 			 off = match_conv(&format[i + 1], &conv);
 			 parse_spec(&format[i + 1], ap, &buffer, conv);
-			 i += off + 1;
+				 i += off + 1;
 		}
-		else
-		//if (conv == nil)
+		else if (format[i] != '%')
 			write_to_buff(&buffer, format[i]);
 		i++;
 	}

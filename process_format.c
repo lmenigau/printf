@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/03 20:05:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/10 23:01:07 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/11 15:48:54 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	handle_sign(t_print_info *print_info, t_spec *spec)
 			print_info->sign = '-';
 		else if (print_info->arg >= 0 && spec->flags[plus])
 			print_info->sign = '+';
-		else if (print_info->arg > 0 && spec->flags[space])
+		else if (print_info->arg >= 0 && spec->flags[space])
 			print_info->sign = ' ';
 	}
 }
@@ -37,7 +37,7 @@ void	compute_length_num(t_print_info *print_info, t_spec *spec)
 		print_info->arglen = 0;
 	if (print_info->arglen < spec->prec)
 		print_info->preclen = spec->prec - print_info->arglen;
-	if (spec->flags[hash] && spec->conv == o && print_info->arg != 0)
+	if (spec->flags[hash] && spec->base == 8 && print_info->arg != 0)
 		print_info->sign = '0';
 	if (spec->flags[hash] && (spec->conv == x || spec->conv == X || spec->conv == p))
 		print_info->arglen += 2;
@@ -47,9 +47,27 @@ void	compute_length_num(t_print_info *print_info, t_spec *spec)
 		print_info->padlen = spec->width - print_info->arglen - print_info->preclen;
 }
 
+size_t	wchar_len(wchar_t *str)
+{
+	size_t i;
+
+	i = 0;
+	while (str[i])
+	{
+		i++;
+	}
+	return (i);
+}
+
 void	compute_length_string(t_print_info *print_info, t_spec *spec)
 {
-	print_info->arglen = ft_strlen((char *)print_info->arg);
+	if ((void *)print_info->arg != NULL)
+	{
+	if ((spec->conv == s && spec->mod == l) || spec->conv == S)
+		print_info->arglen = wchar_len((wchar_t *)print_info->arg);
+	else if (spec->conv == s)
+		print_info->arglen = ft_strlen((char *)print_info->arg);
+	}
 	if (spec->flags[dot] && spec->prec < print_info->arglen)
 		print_info->arglen = spec->prec;
 	if (print_info->arglen < spec->width)

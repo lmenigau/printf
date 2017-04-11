@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:25:00 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/10 23:03:11 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/11 15:47:06 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,12 @@ void	padding(int padlen, char padchar, t_buff *buffer)
 int		print_number(t_print_info *print_info, t_spec *spec, t_buff *buffer)
 {
 	if (spec->flags[dot] && print_info->arg == 0 && spec->prec == 0 &&
-			!(spec->flags[hash] && spec->conv == o))
+			!(spec->flags[hash] && spec->base == 8))
 		return 0;
 	if (!spec->flags[zero])
 	{
-		if (spec->flags[hash] && (spec->conv == x || spec->conv == p) && print_info->arg != 0)
+		if ((spec->flags[hash] && (spec->conv == x ) &&
+				(print_info->arg != 0)) || spec->conv == p)
 			put_str_buff(buffer, "0x", 2);
 		if (spec->flags[hash] && spec->conv == X && print_info->arg != 0)
 			put_str_buff(buffer, "0X", 2);
@@ -84,20 +85,22 @@ int		print_char(long arg, t_spec *spec, t_buff *buffer)
 		write_to_buff(buffer, arg);
 	else if ((spec->conv == c && spec->mod == l) || spec->conv == C)
 	{
-		if (arg <= 127)
-			write_to_buff(buffer, arg);
-		else
-			wctoutf8(buffer, (wchar_t)arg);
+		wctoutf8(buffer, (wchar_t)arg);
 	}
 	return (0);
 }
 
 int		print_string(t_print_info *print_info, t_spec *spec, t_buff *buffer)
 {
-	if (spec->conv == s)
-		put_str_buff(buffer, (char *)print_info->arg, print_info->arglen);
-	else if ((spec->conv == s && spec->mod == l) || spec->conv == S)
+	if ((void *)print_info->arg == NULL)
+	{
+		put_str_buff(buffer, "(null)", 6);
+		return 0;
+	}
+	if ((spec->conv == s && spec->mod == l) || spec->conv == S)
 		put_wstr_buff(buffer, (wchar_t *)print_info->arg, print_info->arglen);
+	else if (spec->conv == s)
+		put_str_buff(buffer, (char *)print_info->arg, print_info->arglen);
 	return (0);
 }
 
@@ -105,7 +108,8 @@ int		print_arg(t_print_info *print_info, t_spec *spec, t_buff *buffer)
 {
 	if (spec->flags[zero])
 	{
-		if (spec->flags[hash] && (spec->conv == x || spec->conv == p) && print_info->arg != 0)
+		if ((spec->flags[hash] && (spec->conv == x ) &&
+				(print_info->arg != 0)) || spec->conv == p)
 			put_str_buff(buffer, "0x", 2);
 		if (spec->flags[hash] && spec->conv == X && print_info->arg != 0)
 			put_str_buff(buffer, "0X", 2);

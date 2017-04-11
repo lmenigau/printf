@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 18:47:40 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/10 18:55:19 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/10 23:38:48 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ int		wctoutf8(t_buff *buff, wchar_t wchar)
 	int		i;
 
 	i = 0;
+	if (wchar <= 127)
+	{
+		write_to_buff(buff, wchar);
+		return (1);
+	}
 	while (wchar)
 	{
 		out[i] = (wchar & 0b111111) | 0b10000000;

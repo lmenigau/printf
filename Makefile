@@ -6,7 +6,7 @@
 #*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/11/18 02:18:30 by lmenigau          #+#    #+#             *#
-#*   Updated: 2017/04/10 19:19:39 by lmenigau         ###   ########.fr       *#
+#*   Updated: 2017/04/11 08:26:54 by lmenigau         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -14,7 +14,7 @@ NAME	= libftprintf.a
 #CC		= gcc-6
 SRC		= ft_printf.c utils.c number.c print.c process_format.c wctoutf8.c
 OBJ		= $(SRC:.c=.o)
-CFLAGS	= -Wall -Wextra -Ilibft/ -g
+CFLAGS	= -Wall -Wextra -Ilibft/ -g #-fsanitize=address
 LFLAGS	= -lft -lftprintf
 LDFLAGS	= -Llibft/ -L.
 LIBDIR	= libft
