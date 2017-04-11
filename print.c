@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:25:00 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/11 19:06:58 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/11 19:18:17 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	put_str_buff(t_buff *buff, char *str, size_t len)
 	}
 }
 
-int 	put_wstr_buff(t_buff *buff, wchar_t *str, size_t len)
+int		put_wstr_buff(t_buff *buff, wchar_t *str, size_t len)
 {
 	size_t	i;
 
@@ -111,8 +111,7 @@ int		print_arg(t_print_info *print_info, t_spec *spec, t_buff *buffer)
 {
 	int		error_ret;
 
-	error_ret = 0;
-	if (spec->flags[zero])
+	if (spec->flags[zero] && !(error_ret = 0))
 	{
 		if ((spec->flags[hash] && (spec->conv == x) &&
 					(print_info->arg != 0)) || spec->conv == p)
