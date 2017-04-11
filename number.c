@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:29:02 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/11 14:30:33 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/11 18:24:54 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ void	ft_putnbr_base_signed(long n, t_buff *buffer, char *basestr, int base)
 		pow /= base;
 	}
 }
-void	ft_putnbr_base_unsigned(unsigned long n, t_buff *buffer, char *basestr, int base)
+
+void	ft_putnbr_base_unsigned(unsigned long n, t_buff *buffer, char *basestr,
+		int base)
 {
 	unsigned long	pow;
 
@@ -86,11 +88,12 @@ int		parse_number(const char *str, size_t *index)
 
 long	get_arg_num(va_list ap, t_spec *spec)
 {
-	long	arg;
-	static int argsize[3] = {32, 56, 48};
+	long		arg;
+	static int	argsize[3] = {32, 56, 48};
+
 	arg = 0;
 	if (spec->mod == none)
-		arg =  va_arg(ap, int);
+		arg = va_arg(ap, int);
 	else if (spec->mod == hh)
 		arg = (char)va_arg(ap, int);
 	else if (spec->mod == h)

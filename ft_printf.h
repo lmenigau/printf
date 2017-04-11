@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:49:51 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/10 23:01:38 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/11 19:04:01 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,9 @@ int		numlen(long n, int base);
 int		print_arg(t_print_info *print_info, t_spec *spec, t_buff *buffer);
 void	ft_putnbr_base_unsigned(unsigned long n, t_buff *buffer, char *basestr, int base);
 int		process_format(va_list ap, t_buff *buff, t_spec *spec, char convchar);
-long	get_arg(va_list ap, t_buff *buff, t_spec *spec);
+long	get_arg(va_list ap, t_spec *spec);
 int		wctoutf8(t_buff *buff, wchar_t wchar);
+size_t	wchar_len(wchar_t *str);
+int		check_utf8(t_buff *buff, wchar_t wchar);
 
 #endif

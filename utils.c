@@ -6,10 +6,9 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:27:42 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/03 20:36:00 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/11 18:37:57 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "ft_printf.h"
 
@@ -32,4 +31,3 @@ size_t	ft_strchri(const char *str, int c)
 	}
 	return (i);
 }
-
