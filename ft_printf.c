@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/11 19:03:26 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/12 22:33:22 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,12 @@ int				parse_spec(const char *format, va_list ap, t_buff *buff,
 		if ((found = ft_strchri("#0-+ ", format[i])) < 5)
 			spec.flags[found] = 1;
 		else if (format[i] >= '1' && format[i] <= '9')
-			spec.width = parse_number(&format[i], &i);
+			spec.width = parse_number(&format[i], &i, ap);
+		else if (format[i] == '*')
+			spec.width = va_arg(ap, int);
 		else if (format[i] == '.')
 		{
-			i++;
-			spec.prec = parse_number(&format[i], &i);
+			spec.prec = parse_number(&format[++i], &i, ap);
 			spec.flags[dot] = 1;
 		}
 		else if ((found = ft_strchri("__hl_jz", format[i])) < 7)
@@ -87,7 +88,7 @@ int				match_conv(const char *format, t_conv *conv)
 	size_t	i;
 
 	i = 0;
-	while (format[i] && (ft_strchri("#0-+ .hljz0123456789", format[i]) < 19))
+	while (format[i] && (ft_strchri("#0-+ .hljz0123456789*", format[i]) < 21))
 	{
 		i++;
 	}

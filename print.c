@@ -6,40 +6,11 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:25:00 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/11 19:18:17 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/13 01:59:47 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-void	put_str_buff(t_buff *buff, char *str, size_t len)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < len)
-	{
-		buff->buff[buff->count % BUFF_SIZE] = str[i];
-		buff->count++;
-		if (buff->count % BUFF_SIZE == 0)
-			write(1, buff->buff, BUFF_SIZE);
-		i++;
-	}
-}
-
-int		put_wstr_buff(t_buff *buff, wchar_t *str, size_t len)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] != '\0' && i < len)
-	{
-		if (check_utf8(buff, str[i]) == -1)
-			return (-1);
-		i++;
-	}
-	return (0);
-}
 
 void	padding(int padlen, char padchar, t_buff *buffer)
 {
@@ -101,7 +72,8 @@ int		print_string(t_print_info *print_info, t_spec *spec, t_buff *buffer)
 		return (0);
 	}
 	if ((spec->conv == s && spec->mod == l) || spec->conv == S)
-		put_wstr_buff(buffer, (wchar_t *)print_info->arg, print_info->arglen);
+		return (put_wstr_buff(buffer, (wchar_t *)print_info->arg,
+					print_info->arglen));
 	else if (spec->conv == s)
 		put_str_buff(buffer, (char *)print_info->arg, print_info->arglen);
 	return (0);

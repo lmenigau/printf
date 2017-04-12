@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 18:47:40 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/11 18:46:08 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/13 01:58:27 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ int		check_utf8(t_buff *buff, wchar_t wchar)
 	if (wchar <= 127)
 		write_to_buff(buff, wchar);
 	else if (MB_CUR_MAX == 4 &&
-			(wchar <= 0xD7FF || wchar >= 0xE000 || wchar <= 0x10FFFF))
+			!((wchar >= 0xD800 && wchar <= 0xDFFF) || wchar > 0x10FFFF))
 		wctoutf8(buff, wchar);
+	else if (MB_CUR_MAX == 1 && wchar <= 0xFF)
+		write_to_buff(buff, wchar);
 	else
 		return (-1);
 	return (0);

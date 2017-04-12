@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:49:51 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/11 19:14:19 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/12 22:53:09 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ long			get_int(va_list ap);
 long			get_long(va_list ap);
 void			write_to_buff(t_buff *buffer, char c);
 long			get_arg_num(va_list ap, t_spec *spec);
-int				parse_number(const char *str, size_t *index);
 void			ft_putnbr_base_signed(long n, t_buff *buffer, char
 		*basestr, int base);
 size_t			ft_strchri(const char *str, int c);
@@ -122,5 +121,8 @@ long			get_arg(va_list ap, t_spec *spec);
 int				wctoutf8(t_buff *buff, wchar_t wchar);
 size_t			wchar_len(wchar_t *str);
 int				check_utf8(t_buff *buff, wchar_t wchar);
+int				parse_number(const char *str, size_t *index, va_list ap);
+void			put_str_buff(t_buff *buff, char *str, size_t len);
+int				put_wstr_buff(t_buff *buff, wchar_t *str, size_t len);
 
 #endif

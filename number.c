@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:29:02 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/11 18:24:54 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/12 20:19:04 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	ft_putnbr_base_unsigned(unsigned long n, t_buff *buffer, char *basestr,
 	}
 }
 
-int		parse_number(const char *str, size_t *index)
+int		parse_number(const char *str, size_t *index, va_list ap)
 {
 	int		i;
 	int		neg;
@@ -68,6 +68,8 @@ int		parse_number(const char *str, size_t *index)
 	neg = 1;
 	nb = 0;
 	i = 0;
+	if (str[i] == '*')
+		return (va_arg(ap, int));
 	while (ft_isspace(str[i]))
 		i++;
 	if (str[i] == '-')
