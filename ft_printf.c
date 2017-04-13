@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/13 02:57:43 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/13 03:37:16 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ int				parse_spec(const char *format, va_list ap, t_buff *buff,
 			spec.flags[found] = 1;
 		else if (format[i] >= '1' && format[i] <= '9')
 			spec.width = parse_number(&format[i], &i, ap);
+		else if (format[i] == '*')
+			spec.width = va_arg(ap, int);
 		else if (format[i] == '.')
 		{
 			spec.prec = parse_number(&format[++i], &i, ap);
@@ -75,8 +77,6 @@ int				parse_spec(const char *format, va_list ap, t_buff *buff,
 		}
 		else if ((found = ft_strchri("__hl_jz", format[i])) < 7)
 			parse_mod(&spec, found);
-		else if (format[i] == '\0')
-			return (-1);
 		else
 			break ;
 	}
@@ -93,7 +93,10 @@ int				match_conv(const char *format, t_conv *conv)
 		i++;
 	}
 	*conv = ft_strchri("sSpdDioOuUxXcC", format[i]);
-	return (i);
+	if (format[i] == '\0')
+		return (i);
+	else
+		return (i + 1);
 }
 
 int				ft_printf(const char *restrict format, ...)
@@ -114,7 +117,7 @@ int				ft_printf(const char *restrict format, ...)
 			off = match_conv(&format[i + 1], &conv);
 			if (parse_spec(&format[i + 1], ap, &buffer, conv) == -1)
 				return (-1);
-			i += off + 1;
+			i += off;
 		}
 		else if (format[i] != '%')
 			write_to_buff(&buffer, format[i]);
