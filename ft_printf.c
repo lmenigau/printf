@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/12 22:33:22 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/13 02:57:43 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ int				parse_spec(const char *format, va_list ap, t_buff *buff,
 			spec.flags[found] = 1;
 		else if (format[i] >= '1' && format[i] <= '9')
 			spec.width = parse_number(&format[i], &i, ap);
-		else if (format[i] == '*')
-			spec.width = va_arg(ap, int);
 		else if (format[i] == '.')
 		{
 			spec.prec = parse_number(&format[++i], &i, ap);
@@ -77,6 +75,8 @@ int				parse_spec(const char *format, va_list ap, t_buff *buff,
 		}
 		else if ((found = ft_strchri("__hl_jz", format[i])) < 7)
 			parse_mod(&spec, found);
+		else if (format[i] == '\0')
+			return (-1);
 		else
 			break ;
 	}
