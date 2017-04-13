@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 03:25:00 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/13 01:59:47 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/13 03:58:11 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ int		print_number(t_print_info *print_info, t_spec *spec, t_buff *buffer)
 
 int		print_char(long arg, t_spec *spec, t_buff *buffer)
 {
+	if (spec->conv == nil && arg == 0)
+		return (0);
 	if ((spec->conv == c && spec->mod != l) || spec->conv == nil)
 		write_to_buff(buffer, arg);
 	else if ((spec->conv == c && spec->mod == l) || spec->conv == C)
