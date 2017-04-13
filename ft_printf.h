@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:49:51 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/12 22:53:09 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/13 02:33:25 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 # include <stdarg.h>
 # include <wchar.h>
-# include "libft.h"
+# include <unistd.h>
+# include <stdlib.h>
 
 # define BLOW	"0123456789abcdef"
 # define BUPP	"0123456789ABCDEF"
@@ -124,5 +125,8 @@ int				check_utf8(t_buff *buff, wchar_t wchar);
 int				parse_number(const char *str, size_t *index, va_list ap);
 void			put_str_buff(t_buff *buff, char *str, size_t len);
 int				put_wstr_buff(t_buff *buff, wchar_t *str, size_t len);
+int				ft_isdigit(int c);
+int				ft_isspace(int c);
+size_t			ft_strlen(const char *s);
 
 #endif
