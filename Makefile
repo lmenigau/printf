@@ -6,7 +6,7 @@
 #*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/11/18 02:18:30 by lmenigau          #+#    #+#             *#
-#*   Updated: 2017/04/13 02:25:25 by lmenigau         ###   ########.fr       *#
+#*   Updated: 2017/04/13 02:36:35 by lmenigau         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -14,7 +14,7 @@ NAME	= libftprintf.a
 SRC		= ft_printf.c utils.c number.c print.c process_format.c wctoutf8.c\
 		  ft_lib.c
 OBJ		= $(SRC:.c=.o)
-CFLAGS	= -Wall -Wextra
+CFLAGS	= -Wall -Wextra -Werror
 LFLAGS	= -lftprintf
 LDFLAGS	= -L.
 
