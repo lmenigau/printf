@@ -6,7 +6,7 @@
 /*   By: lmenigau <lmenigau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 02:45:06 by lmenigau          #+#    #+#             */
-/*   Updated: 2017/04/13 03:46:59 by lmenigau         ###   ########.fr       */
+/*   Updated: 2017/04/13 04:11:31 by lmenigau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int				parse_spec(const char *format, va_list ap, t_buff *buff,
 	{
 		if ((found = ft_strchri("#0-+ ", format[i])) < 5)
 			spec.flags[found] = 1;
-		else if (format[i] >= '1' && format[i] <= '9')
+		else if ((format[i] >= '1' && format[i] <= '9') || format[i] == '*')
 			spec.width = parse_number(&format[i], &i, ap);
 		else if (format[i] == '.')
 		{
